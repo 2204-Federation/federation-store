@@ -15,6 +15,7 @@ import {
   StepLabel,
   TextField,
   Input,
+  Divider,
 } from "@material-ui/core";
 import List from "@mui/material/List";
 import EmailIcon from "@material-ui/icons/Email";
@@ -58,6 +59,8 @@ export default function Checkout() {
 
   const cart = useSelector((state) => state.cartReducer);
   const user = useSelector((state) => state.auth);
+  console.log(user);
+  const { orders } = useSelector((state) => state);
 
   let total;
   if (cart.length !== 0) {
@@ -269,14 +272,42 @@ export default function Checkout() {
               ))}
             </Stepper>
           </div>
-          <div>
+          {/* <div>
             <Typography variant='h2' align='center' margin='30px'>
               YOUR ORDER IS BEING CONFIRMED...
             </Typography>
             <Typography variant='h3' align='center'>
               You will be re-directed!
             </Typography>
-          </div>
+          </div> */}
+
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10%",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant='h5' style={{ textAlign: "center" }}>
+                {" "}
+                Thank you for your purchase {user.firstName}, your order is
+                confirmed
+              </Typography>
+
+              <br />
+              <Button
+                component={Link}
+                to='/allsnacks'
+                variant='outlined'
+                type='button'
+                style={{ marginLeft: "39%", marginRight: "39%" }}
+              >
+                Continue Shopping
+              </Button>
+            </div>
+          </>
         </>
       )}
     </div>

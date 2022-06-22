@@ -62,4 +62,7 @@ export default makeStyles((theme) => ({
     marginLeft: "18%",
     marginRight: "18%",
   },
+  divider: {
+    margin: "20px 0",
+  },
 }));

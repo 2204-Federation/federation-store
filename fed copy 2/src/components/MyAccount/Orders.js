@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useStyles from './styles';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import useStyles from "./styles";
 import {
   Container,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { fetchOrders } from '../../store';
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { fetchOrders } from "../../store";
 
 export default function Orders() {
   const user = useSelector((state) => state.auth);
   const { orders } = useSelector((state) => state);
   const dispatch = useDispatch();
+  console.log(orders);
 
   useEffect(() => {
     dispatch(fetchOrders(user.id));
@@ -33,7 +34,7 @@ export default function Orders() {
             </AccordionDetails>
           ))}
           <AccordionDetails
-            sx={{ justifyContent: 'end' }}
+            sx={{ justifyContent: "end" }}
           >{`TOTAL: ${order.total}`}</AccordionDetails>
         </Accordion>
       ))}

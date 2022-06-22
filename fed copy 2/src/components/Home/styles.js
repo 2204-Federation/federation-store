@@ -3,21 +3,19 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
   main: {},
   root: {
-    flexGrow: 1,
     display: "flex",
     paddingTop: theme.spacing(8),
     paddingLeft: 0,
     position: "relative",
     left: 0,
     top: "-3px",
-    flexWrap: "wrap",
     width: "100%",
     flexDirection: "row",
   },
   m1: {
-    height: "100%",
+    height: "90vh",
     padding: 0,
-    backgroundColor: "aqua",
+    backgroundColor: "#89CFF0",
     width: "50%",
   },
   homeTitle: {
@@ -31,11 +29,23 @@ export default makeStyles((theme) => ({
     marginBottom: "-20px",
   },
   imageDiv: {
-    height: "50%",
+    height: "90vh",
     width: "50%",
     display: "flex",
     flexDirection: "column",
+    objectFit: "cover",
+    overflow: "hidden",
   },
+  textAndButtons: {
+    marginTop: "50px",
+    display: "grid",
+    placeItems: "center",
+  },
+  textLeft: {
+    display: "grid",
+    placeItems: "left",
+  },
+
   media: {
     width: "100%",
     height: "50%",
@@ -45,11 +55,10 @@ export default makeStyles((theme) => ({
     marginBottom: "40px",
   },
   shopButton: {
-    marginTop: "30px",
+    marginTop: "50px",
     borderRadius: "30px !important", //need !important to round button or else another class is overtaking it
     backgroundColor: "white",
     position: "relative",
-    left: "35%",
   },
   m2: {
     display: "flex",

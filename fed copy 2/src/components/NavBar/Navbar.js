@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { fetchAUser } from "../../store";
 import {
   AppBar,
@@ -29,6 +30,9 @@ const Navbar = () => {
 
   const userId = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
+
+  const location = useLocation();
+  console.log(location.pathname);
 
   useEffect(() => {
     if (cartReducer) {
@@ -86,9 +90,11 @@ const Navbar = () => {
                 <Person />
               </IconButton>
 
-              <IconButton>
-                <Shoppingcart />
-              </IconButton>
+              {location.pathname !== ("/checkout" || "/confirmation") && (
+                <IconButton>
+                  <Shoppingcart />
+                </IconButton>
+              )}
 
               {auth.isAdmin ? (
                 <Link to='/adminpage'>
