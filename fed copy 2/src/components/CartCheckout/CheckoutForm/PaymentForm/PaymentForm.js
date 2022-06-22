@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, Typography, Button } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  CircularProgress,
+} from "@material-ui/core";
 import { Elements, CardElement, PaymentElement } from "@stripe/react-stripe-js";
 
 import { Payment } from "@material-ui/icons";
@@ -26,6 +32,7 @@ const PaymentForm = ({ backstep, nextstep }) => {
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const cart = useSelector((state) => state.cartReducer);
   const user = useSelector((state) => state.auth);
@@ -75,9 +82,9 @@ const PaymentForm = ({ backstep, nextstep }) => {
 
     nextstep();
 
-    setTimeout(function () {
-      window.location.replace("/");
-    }, 5000);
+    // setTimeout(function () {
+    //   window.location.replace("/");
+    // }, 5000);
   };
 
   const handleSubmit = async (e) => {
@@ -99,14 +106,16 @@ const PaymentForm = ({ backstep, nextstep }) => {
           },
           body: JSON.stringify({ id: id }),
         })
+          .then(setIsProcessing(true))
           .then((res) => res.json())
-          .then((data) => console.log(data));
-
-        // if (response.data.success) {
-        //   console.log("Successful Payment");
-        //   setSuccess(true);
-        //   setMessage("Successful Payment");
-        // }
+          .then((data) => {
+            console.log(data);
+            if (data.success) {
+              handleCheckout();
+              nextstep();
+              setIsProcessing(false);
+            }
+          });
       } catch (error) {
         console.log("Error", error);
       }
@@ -116,41 +125,78 @@ const PaymentForm = ({ backstep, nextstep }) => {
   };
 
   return (
-    <Card>
-      <CardContent>
-        <Payment />
-        <Typography className={classes.title}>Payment Information</Typography>
+    <>
+      {!isProcessing ? (
+        <Card>
+          <CardContent>
+            <Payment />
+            <Typography className={classes.title}>
+              Payment Information
+            </Typography>
 
-        <div style={{ padding: "20px" }}>
-          <form onSubmit={handleSubmit}>
-            <CardElement id='cardElement' />
+            <div style={{ padding: "20px" }}>
+              <form onSubmit={handleSubmit}>
+                <CardElement id='cardElement' />
 
-            <br />
-            <br />
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Button variant='outlined' onClick={() => backstep()}>
-                Back
-              </Button>
-              <Button
-                type='submit'
-                variant='contained'
-                disabled={!stripe || !elements || isLoading}
-                color='primary'
-                onClick={() => {
-                  handleCheckout();
-                }}
-              >
-                Pay
-              </Button>
+                <br />
+                <br />
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Button variant='outlined' onClick={() => backstep()}>
+                    Back
+                  </Button>
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    disabled={!stripe || !elements || isLoading}
+                    color='primary'
+                  >
+                    Pay
+                  </Button>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          <div style={{ margin: "15px" }}>
+            <Typography variant='h5'>
+              Your order is being processed, please wait
+            </Typography>
+          </div>
+          <br />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        </>
+      )}
+    </>
   );
 };
 
 export default PaymentForm;
+
+{
+  /* <>
+  <div style={{ margin: "15px" }}>
+    <Typography variant='h5'>
+      Your order is being processed, please wait
+    </Typography>
+  </div>
+  <br />
+  <div className={classes.spinner}>
+    <CircularProgress />
+  </div>
+</>; */
+}
 
 /* <ElementsConsumer>
               {({ elements, stripe }) => {
