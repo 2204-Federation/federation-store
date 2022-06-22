@@ -31,7 +31,13 @@ const CartItem = ({ itemInfo }) => {
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography variant='h5'>{itemInfo.product.name}</Typography>
           <Typography variant='subtitle1' color='text.secondary'>
-            CAT HERE
+            {itemInfo.product.productCategoryId === 1
+              ? 'Salty'
+              : itemInfo.product.productCategoryId === 2
+              ? 'Sweet'
+              : itemInfo.product.productCategoryId === 3
+              ? 'Healthy'
+              : 'Refrigerated & Frozen'}
           </Typography>
           <Typography variant='h6'>${itemInfo.product.price}</Typography>
         </CardContent>

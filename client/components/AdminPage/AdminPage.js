@@ -105,14 +105,13 @@ const AdminPage = () => {
   }, []);
 
   //for products page
-  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
   const [flavor, setFlavor] = useState('All');
   const { products } = useSelector((state) => state);
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
 
-  const randomListProducts = shuffle(products);
   const saltyProducts = products.filter(
     (product) => product.productCategoryId === 1
   );
@@ -315,13 +314,15 @@ const AdminPage = () => {
                   </Grid>
                 </main>
               </div>
-              <Typography
-                variant='h1'
-                align='center'
-                onClick={() => setFlavor('All')}
-              >
-                BROWSE ALL OF OUR SNACKS!
-              </Typography>
+              <Box textAlign='center'>
+                <Button
+                  sx={{ width: 1000, height: 200, fontSize: 60 }}
+                  color='secondary'
+                  onClick={() => setFlavor('All')}
+                >
+                  BROWSE ALL OF OUR SNACKS!
+                </Button>
+              </Box>
               <Box textAlign='center'>
                 <AdminPageProductCreateForm />
               </Box>
@@ -389,7 +390,7 @@ const AdminPage = () => {
                             </Grid>
                           );
                         })
-                      : randomListProducts.map((product) => {
+                      : products.map((product) => {
                           return (
                             <Grid
                               item

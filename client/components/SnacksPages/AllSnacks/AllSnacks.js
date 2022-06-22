@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../../store/Snacks';
 import SingleSnackComponent from './SingleSnackComponent';
 import FilterImg from './FilterImg';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 const AllSnacks = () => {
   const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
-
   const classes = useStyles();
-  const { products } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const { products } = useSelector((state) => state);
   const [flavor, setFlavor] = useState('All');
 
   useEffect(() => {
@@ -110,9 +109,15 @@ const AllSnacks = () => {
           </Grid>
         </main>
       </div>
-      <Typography variant='h1' align='center' onClick={() => setFlavor('All')}>
-        BROWSE ALL OF OUR SNACKS!
-      </Typography>
+      <Box textAlign='center'>
+        <Button
+          sx={{ width: 1000, height: 200, fontSize: 60 }}
+          color='secondary'
+          onClick={() => setFlavor('All')}
+        >
+          BROWSE ALL OF OUR SNACKS!
+        </Button>
+      </Box>
       <div>
         <main className={classes.root}>
           <div className={classes.toolbar} />

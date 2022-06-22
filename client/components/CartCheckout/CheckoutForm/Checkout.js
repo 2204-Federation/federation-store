@@ -28,8 +28,7 @@ import NoCartItemPage from '../NoCartItemPage';
 import { useSelector, useDispatch } from 'react-redux';
 import EmailAndShippingForm from '../EmailAndShippingForm/EmailAndShippingForm';
 import CartItemCheckOut from './CartItemCheckOut';
-import { useHistory } from 'react-router-dom';
-
+import List from '@mui/material/List';
 import { Elements, CardElement } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -48,7 +47,6 @@ const stripePromise = loadStripe(
 export default function Checkout() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Shipping Information', 'Payment Details', 'Confirmation'];
@@ -91,10 +89,6 @@ export default function Checkout() {
     clientSecret,
   };
 
-  function refreshPage() {
-    window.location.reload(false);
-  }
-
   // HANDLE CHECKOUT
   const handleCheckout = async () => {
     // create new order detail
@@ -124,7 +118,6 @@ export default function Checkout() {
     await cart.map((item) => {
       return dispatch(_deleteCartItem(item.id));
     });
-    // refreshPage();
 
     // delete shopping session
     await dispatch(_deleteShoppingSession(cart[0].shoppingSessionId));
@@ -133,6 +126,10 @@ export default function Checkout() {
     await dispatch(_createshoppingSession(user.id));
 
     nextstep();
+
+    setTimeout(function () {
+      window.location.replace('/');
+    }, 5000);
   };
 
   //RETURN BEGINS HERE
@@ -166,11 +163,18 @@ export default function Checkout() {
                     >
                       Your cart
                     </Typography>
-                    <Typography variant='body2'>
+                    <List
+                      sx={{
+                        width: '100%',
+                        position: 'relative',
+                        overflow: 'auto',
+                        maxHeight: 700,
+                      }}
+                    >
                       {cart.map((cartItem) => {
                         return <CartItemCheckOut itemInfo={cartItem} />;
                       })}
-                    </Typography>
+                    </List>
                   </CardContent>
                 </Card>
 
@@ -290,7 +294,14 @@ export default function Checkout() {
               ))}
             </Stepper>
           </div>
-          <div>YOUR ORDER #123 HAS BEEN CONFIRMED!</div>
+          <div>
+            <Typography variant='h2' align='center' margin='30px'>
+              YOUR ORDER # HAS BEEN CONFIRMED!
+            </Typography>
+            <Typography variant='h3' align='center'>
+              You will be re-directed!
+            </Typography>
+          </div>
         </>
       )}
     </div>
